@@ -1,0 +1,50 @@
+{
+  "dashboard": {
+    "title": "Traces Dashboard",
+    "tags": ["traces", "tempo", "distributed-tracing"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Trace Search",
+        "type": "tempo",
+        "targets": [
+          {
+            "queryType": "traceql",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {"h": 10, "w": 24, "x": 0, "y": 0}
+      },
+      {
+        "id": 2,
+        "title": "Span Duration Breakdown",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(tempo_span_duration_seconds_bucket[5m]))",
+            "legendFormat": "{{span_name}}"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 10}
+      },
+      {
+        "id": 3,
+        "title": "Trace Count by Service",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "sum(rate(tempo_spans_total[1m])) by (service_name)",
+            "legendFormat": "{{service_name}}"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 10}
+      }
+    ],
+    "refresh": "10s",
+    "schemaVersion": 27,
+    "version": 1
+  }
+}
+
+
